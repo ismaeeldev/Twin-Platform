@@ -1,26 +1,242 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* shadcn semantic slots mapped onto our tokens */
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--bg-surface-2);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--accent-primary);
+  --color-primary-foreground: var(--text-on-accent);
+  --color-secondary: var(--bg-surface-2);
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--bg-surface-2);
+  --color-muted-foreground: var(--text-secondary);
+  --color-accent: var(--accent-soft-bg);
+  --color-accent-foreground: var(--accent-primary);
+  --color-destructive: var(--status-rejected);
+  --color-border: var(--border-subtle);
+  --color-input: var(--bg-surface-2);
+  --color-ring: var(--accent-primary);
+
+  --color-sidebar: var(--bg-surface);
+  --color-sidebar-foreground: var(--text-primary);
+  --color-sidebar-primary: var(--accent-primary);
+  --color-sidebar-primary-foreground: var(--text-on-accent);
+  --color-sidebar-accent: var(--accent-soft-bg);
+  --color-sidebar-accent-foreground: var(--accent-primary);
+  --color-sidebar-border: var(--border-subtle);
+  --color-sidebar-ring: var(--accent-primary);
+
+  /* ThemeGuideline.md Section 1 — direct token access for custom components */
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-2: var(--bg-surface-2);
+  --color-bg-surface-3: var(--bg-surface-3);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-hover: var(--accent-primary-hover);
+  --color-accent-primary-active: var(--accent-primary-active);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-soft-bg: var(--accent-soft-bg);
+
+  --color-status-approved: var(--status-approved);
+  --color-status-approved-bg: var(--status-approved-bg);
+  --color-status-rejected: var(--status-rejected);
+  --color-status-rejected-bg: var(--status-rejected-bg);
+  --color-status-escalated: var(--status-escalated);
+  --color-status-escalated-bg: var(--status-escalated-bg);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-bg: var(--status-pending-bg);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-on-accent: var(--text-on-accent);
+
+  /* Radius scale — ThemeGuideline.md Section 3 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ThemeGuideline.md Section 1.1–1.4 — dark is the default palette (no .dark class needed) */
+:root {
+  --bg-base: #08090c;
+  --bg-surface: #0f1116;
+  --bg-surface-2: #161923;
+  --bg-surface-3: #1e2230;
+  --border-subtle: #232733;
+  --border-strong: #31374a;
+
+  --accent-primary: #6c5ce7;
+  --accent-primary-hover: #7d6df2;
+  --accent-primary-active: #5a4bd1;
+  --accent-glow: rgba(108, 92, 231, 0.35);
+  --accent-soft-bg: rgba(108, 92, 231, 0.12);
+
+  --status-approved: #2ecc71;
+  --status-approved-bg: rgba(46, 204, 113, 0.12);
+  --status-rejected: #ff5c5c;
+  --status-rejected-bg: rgba(255, 92, 92, 0.12);
+  --status-escalated: #f5a623;
+  --status-escalated-bg: rgba(245, 166, 35, 0.12);
+  --status-pending: #5b9dff;
+  --status-pending-bg: rgba(91, 157, 255, 0.12);
+
+  --text-primary: #f5f6fa;
+  --text-secondary: #a8adbd;
+  --text-tertiary: #6b7085;
+  --text-on-accent: #ffffff;
+
+  /* ThemeGuideline.md Section 4.6 — modal backdrop, tokenized rather than
+     hardcoded inline in dialog.tsx so it's theme-aware like every other
+     color in the app. */
+  --overlay-backdrop: rgba(8, 9, 12, 0.72);
+}
+
+/* ThemeGuideline.md Section 1.5 — light mode is secondary, opted into via .light */
+.light {
+  --bg-base: #fafafb;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f2f3f7;
+  --bg-surface-3: #e9eaf1;
+  --border-subtle: #e4e6ed;
+  --border-strong: #c7cad6;
+
+  --text-primary: #14161f;
+  --text-secondary: #565b6e;
+  --text-tertiary: #8b90a0;
+  --text-on-accent: #ffffff;
+
+  /* accent + semantic status colors stay identical per ThemeGuideline.md 1.5 */
+
+  /* Lighter tint for light mode — the dark-mode value's near-black tint
+     would look wrong against a white app background. */
+  --overlay-backdrop: rgba(20, 22, 31, 0.4);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ThemeGuideline.md Section 2 — type scale utilities (fluid via clamp on display/hero) */
+@utility text-display {
+  font-family: var(--font-geist-sans);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+@utility text-h1 {
+  font-family: var(--font-geist-sans);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+@utility text-h2 {
+  font-family: var(--font-geist-sans);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+@utility text-h3 {
+  font-family: var(--font-geist-sans);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+@utility text-body-lg {
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+@utility text-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+@utility text-meta {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+@utility text-micro {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/*
+ * GSAP entrance-animation pre-hide: applied directly in JSX (so it's
+ * present in the server-rendered HTML too, before any JS runs) to elements
+ * a GSAP timeline will `.from({opacity: 0, ...})` on mount. Using
+ * `visibility: hidden` rather than `opacity: 0` or `display: none` means
+ * the element still occupies its layout space (no shift when it becomes
+ * visible) and is trivially undone via `gsap.set(el, {clearProps:
+ * "visibility"})` in the same tick the real animation starts — closing the
+ * gap where SSR paints the element fully visible and JS hasn't run yet.
+ */
+@utility invisible-until-js {
+  visibility: hidden;
+}
+
+/* ThemeGuideline.md Section 3 — elevation recipes */
+@utility elevation-card {
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+}
+@utility elevation-hover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 0 0 1px var(--border-strong) inset;
+}
+@utility elevation-cta-glow {
+  box-shadow:
+    0 0 0 1px var(--accent-primary),
+    0 4px 24px var(--accent-glow);
+}
+
+/* ThemeGuideline.md Section 5 principle 5 / Section 10.2 — SkeletonShimmer sweep */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
