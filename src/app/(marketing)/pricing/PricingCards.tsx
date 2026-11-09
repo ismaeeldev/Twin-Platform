@@ -112,7 +112,7 @@ function PricingCards({ isLoggedIn, currentPlan }: { isLoggedIn: boolean; curren
               evaluating the product should never be forced to create an
               account before they can even start a sales conversation. */}
           <a
-            href="mailto:alexsontwin@gmail.com?subject=Enterprise%20Plan%20Inquiry"
+            href="mailto:support@twin-platform.co?subject=Enterprise%20Plan%20Inquiry"
             className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "w-full")}
           >
             Contact Us
