@@ -24,7 +24,11 @@ export default function LoginPage() {
           </p>
           {/* Phase 1 stretch goal per docs/ApplicationFlow.md Section 2.2 — static message is acceptable */}
           <p className="mt-2 text-center text-meta text-text-tertiary">
-            Forgot your password? Contact support.
+            Forgot your password?{" "}
+            <a href="mailto:support@twin-platform.co?subject=Password%20Reset" className="text-accent-primary hover:underline">
+              Contact support
+            </a>
+            .
           </p>
         </div>
       </div>

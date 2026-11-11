@@ -38,6 +38,6 @@ export const config = {
   // regardless) while no account ever actually gets marked paid, since all
   // of that logic lives in the webhook handler, not the checkout action.
   matcher: [
-    "/((?!api/auth|api/webhooks|_next/static|_next/image|favicon.ico|manifest.webmanifest|sw.js|offline.html|icons/).*)",
+    "/((?!api/auth|api/webhooks|_next/static|_next/image|favicon.ico|logo.png|logo-mark.png|logo-light.png|logo-mark-light.png|manifest.webmanifest|sw.js|offline.html|icons/).*)",
   ],
 }

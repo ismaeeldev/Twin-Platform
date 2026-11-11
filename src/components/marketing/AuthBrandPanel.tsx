@@ -1,5 +1,7 @@
 import { Eye, ClipboardCheck } from "lucide-react"
 
+import { Logo } from "@/components/shared/Logo"
+
 /**
  * Distinctive left-side panel for /login and /signup, replacing the
  * previous generic centered-card-on-empty-background layout (explicit
@@ -18,18 +20,8 @@ function AuthBrandPanel() {
         style={{ background: "radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)" }}
       />
 
-      <div className="relative flex items-center gap-2.5">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent-primary text-text-on-accent shadow-[0_0_0_1px_var(--accent-primary),0_4px_16px_var(--accent-glow)]">
-          <svg viewBox="0 0 24 24" fill="none" className="size-5" aria-hidden>
-            <path
-              d="M4 5.5C4 4.67157 4.67157 4 5.5 4H18.5C19.3284 4 20 4.67157 20 5.5C20 6.32843 19.3284 7 18.5 7H13.5V18.5C13.5 19.3284 12.8284 20 12 20C11.1716 20 10.5 19.3284 10.5 18.5V7H5.5C4.67157 7 4 6.32843 4 5.5Z"
-              fill="currentColor"
-            />
-            <circle cx="17.5" cy="17.5" r="3" fill="currentColor" fillOpacity="0.35" />
-            <circle cx="17.5" cy="17.5" r="1.5" fill="currentColor" />
-          </svg>
-        </span>
-        <span className="text-h3 font-bold tracking-tight text-text-primary">Twin</span>
+      <div className="relative flex items-center">
+        <Logo variant="full" height={40} />
       </div>
 
       <div className="relative flex flex-col gap-8">

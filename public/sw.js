@@ -10,12 +10,12 @@
 // personalized/authenticated data, so there is no cross-account or
 // post-logout stale-data risk.
 
-const CACHE_VERSION = "twin-static-v1"
+const CACHE_VERSION = "twin-static-v3"
 const OFFLINE_URL = "/offline.html"
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.add(OFFLINE_URL))
+    caches.open(CACHE_VERSION).then((cache) => cache.addAll([OFFLINE_URL, "/logo-light.png"]))
   )
   self.skipWaiting()
 })

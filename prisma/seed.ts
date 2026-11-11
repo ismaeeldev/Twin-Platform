@@ -1,22 +1,59 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, type Plan, type SubscriptionStatus } from "@prisma/client"
 import bcrypt from "bcryptjs"
 
 const prisma = new PrismaClient()
 
-const TEST_EMAIL = "test@example.com"
-const TEST_PASSWORD = "TestPassword123!"
+type SeedAccount = {
+  email: string
+  password: string
+  name: string
+  plan: Plan
+  subscriptionStatus: SubscriptionStatus
+  currentPeriodEnd: Date | null
+}
 
-async function main() {
-  const passwordHash = await bcrypt.hash(TEST_PASSWORD, 10)
+const ACCOUNTS: SeedAccount[] = [
+  // Free/demo account — capped at the demo task limit, no Eval Dashboard.
+  {
+    email: "test@example.com",
+    password: "TestPassword123!",
+    name: "Test User",
+    plan: "DEMO",
+    subscriptionStatus: "NONE",
+    currentPeriodEnd: null,
+  },
+  // Client testing account — every premium feature unlocked. ENTERPRISE +
+  // ACTIVE is the top tier: isPaidPlan() => true (unlimited tasks, no demo
+  // cap), hasEvalAccess() => true (Eval Dashboard) and unlimited history
+  // retention. It has NO Stripe customer/subscription IDs, so no Stripe
+  // webhook can ever touch or downgrade it, and the period end is far away.
+  {
+    email: "premium@twin-platform.co",
+    password: "TwinPremium#2026",
+    name: "Premium Tester",
+    plan: "ENTERPRISE",
+    subscriptionStatus: "ACTIVE",
+    currentPeriodEnd: new Date("2099-12-31T00:00:00.000Z"),
+  },
+]
+
+async function seedAccount(account: SeedAccount) {
+  const passwordHash = await bcrypt.hash(account.password, 10)
+  const planFields = {
+    plan: account.plan,
+    subscriptionStatus: account.subscriptionStatus,
+    currentPeriodEnd: account.currentPeriodEnd,
+  }
 
   const user = await prisma.user.upsert({
-    where: { email: TEST_EMAIL },
-    update: { passwordHash, hasOnboarded: true },
+    where: { email: account.email },
+    update: { passwordHash, hasOnboarded: true, ...planFields },
     create: {
-      email: TEST_EMAIL,
+      email: account.email,
       passwordHash,
-      name: "Test User",
+      name: account.name,
       hasOnboarded: true,
+      ...planFields,
     },
   })
 
@@ -194,10 +231,15 @@ async function main() {
     }
   }
 
-  console.log("\nSeed complete.")
-  console.log("Test login:")
-  console.log(`  email:    ${TEST_EMAIL}`)
-  console.log(`  password: ${TEST_PASSWORD}`)
+  console.log(`  ${account.plan.padEnd(10)} email: ${account.email}   password: ${account.password}`)
+}
+
+async function main() {
+  console.log("\nSeeding accounts...")
+  for (const account of ACCOUNTS) {
+    await seedAccount(account)
+  }
+  console.log("Seed complete.")
 }
 
 main()
